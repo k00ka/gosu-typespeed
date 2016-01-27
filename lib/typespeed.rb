@@ -1,4 +1,4 @@
-require "gosu"
+require 'gosu'
 
 Point = Struct.new :x, :y
 Word  = Struct.new :word, :graphic, :point
@@ -83,5 +83,3 @@ class Typespeed < Gosu::Window
     self.text_input = nil
   end
 end
-
-Typespeed.new.show
