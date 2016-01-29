@@ -35,7 +35,10 @@ class Typespeed < Gosu::Window
       @last_word = Gosu.milliseconds
       self.text_input = @input
     elsif @playing && id == Gosu::KbReturn
-      word = @words.detect { |w| w.word == @input.text }
+      word = @words.detect do |w|
+        w.word == @input.text
+        @correct_words += 1
+      end
       if word
         @words.delete word
         @available_words << word.point
@@ -70,6 +73,7 @@ class Typespeed < Gosu::Window
       Gosu::Font.new(24).draw("(press 'q' to quit)",  WIDTH / 2, HEIGHT / 2 + 48, 1, 1, 1, Gosu::Color::YELLOW)
       Gosu::Font.new(24).draw("(press 'r' to reset)", WIDTH / 2, HEIGHT / 2 + 96, 1, 1, 1, Gosu::Color::YELLOW)
       Gosu::Font.new(24).draw("#{(@correct_words / @game_over_at / 1000).round(1)} WPM", WIDTH / 2, HEIGHT / 2 + 120, 1, 1, 1, Gosu::Color::GREEN)
+      Gosu::Font.new(24).draw("#{@correct_words} TOTAL words", WIDTH / 2, HEIGHT / 2 + 220, 1, 1, 1, Gosu::Color::BLUE)
     elsif @playing
       @words.each do |word|
         word.graphic.draw(word.word, word.point.x, word.point.y, 1)
