@@ -69,6 +69,7 @@ class Typespeed < Gosu::Window
     @words.each do |word|
       word.point.x += @speed / 2500
     end
+
   end
 
   def draw
@@ -80,9 +81,9 @@ class Typespeed < Gosu::Window
       Gosu::Font.new(24).draw("#{@correct_words} TOTAL words", WIDTH / 2, HEIGHT / 2 + 220, 1, 1, 1, Gosu::Color::BLUE)
     elsif @playing
       @words.each do |word|
-        word.graphic.draw(word.word, word.point.x, word.point.y, 1, 1, 1, word_color(word.point.x))
+        word.graphic.draw(word.word, word.point.x, word.point.y, 1, 1, 1, word_color(word, word.point.x))
       end
-
+      Gosu::Image.from_text(@input.text, 48, align: :center).draw(10, 400, 0)
       # draw the speed!
       @speedometer = Gosu::Image.from_text("#{@speed} ms", 48, align: :center)
       @speedometer.draw_rot(120, 24, 1, 0)
@@ -101,7 +102,11 @@ class Typespeed < Gosu::Window
     self.text_input = nil
   end
 
-  def word_color(x)
-    [Gosu::Color::YELLOW,Gosu::Color::RED][x/500]
+  def word_color(word, x)
+    if /^#{Regexp.quote(@input.text)}/.match(word.word) && @input.text != ""
+      Gosu::Color::BLUE
+    else
+      [Gosu::Color::YELLOW,Gosu::Color::RED][x/500]
+    end
   end
 end
