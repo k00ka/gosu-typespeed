@@ -17,3 +17,15 @@ The speed-sprint project can be found here: https://github.com/k00ka/speed-sprin
 4. words are longer and faster the longer you play (3-5, 3-6, 4-7, 4-8, 5-9, 5-10)
 
 	The words displayed seem pretty random. Create a feeling of 'levels' where longer words appear more frequently and move more quickly as you progress.
+
+## Summary
+
+### Speed control
+
+* We initialized `@speed` to 3 seconds (3000 ms) by default
+* The user can control the speed by pressing up and down arrow buttons
+
+### Flying words
+
+* We added logic to change colour and position (Point.x)
+* The draw method is not yet working

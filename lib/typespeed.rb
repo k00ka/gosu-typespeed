@@ -11,6 +11,8 @@ class Typespeed < Gosu::Window
     super WIDTH, HEIGHT
     self.caption = "Typespeed Ruby"
 
+    @speed = 3_000
+    @speedometer = Gosu::Image.from_text("#{@speed} ms", 48, align: :center)
     @dictionary = File.open("words.txt").lines.map(&:strip).to_a
     @words = []
     @last_word = 0
@@ -40,6 +42,10 @@ class Typespeed < Gosu::Window
 
       @input = Gosu::TextInput.new
       self.text_input = @input
+    elsif Gosu::KbUp == id
+      @speed = [@speed - 250, 0].max
+    elsif Gosu::KbDown == id
+      @speed += 250
     end
   end
 
@@ -68,6 +74,10 @@ class Typespeed < Gosu::Window
         word.graphic.draw(word.word, word.point.x, word.point.y, 1)
       end
       Gosu.draw_line(0, 450, Gosu::Color::RED, WIDTH, 450, Gosu::Color::RED)
+
+      # draw the speed!
+      @speedometer = Gosu::Image.from_text("#{@speed} ms", 48, align: :center)
+      @speedometer.draw_rot(120, 24, 1, 0)
     else
       Gosu::Image.from_text("Get ready to type!", 48, align: :center).draw_rot(WIDTH / 2, HEIGHT / 2, 1, 0)
       Gosu::Image.from_text("press 's' to start", 16, align: :center).draw_rot(WIDTH / 2, HEIGHT / 2 + 50, 1, 0)
