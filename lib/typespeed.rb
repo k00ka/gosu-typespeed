@@ -10,19 +10,26 @@ class Typespeed < Gosu::Window
   def initialize
     super WIDTH, HEIGHT
     self.caption = "Typespeed Ruby"
+    self.reset
+    @playing = false
+  end
 
-    @speed = 3_000
+  def reset
+    # Resets the game to the original settings
     @speedometer = Gosu::Image.from_text("#{@speed} ms", 48, align: :center)
-    @dictionary = File.open("words.txt").lines.map(&:strip).to_a
+    @dictionary = File.open("words.txt").each_line.map(&:strip).to_a
     @words = []
     @last_word = 0
     @last_update = Gosu.milliseconds
     @available_words = (1..15).map { |i| Point.new(0, (i * 30) + 3) }
 
-    @game_over = @playing = false
+    @game_over = false
     @correct_words = 0
     @input = Gosu::TextInput.new
     @speed = 3000
+
+    @last_word = Gosu.milliseconds
+    self.text_input = @input
   end
 
   def button_down id
@@ -30,6 +37,10 @@ class Typespeed < Gosu::Window
       exit
     elsif (!@playing || @game_over) && id == Gosu::KbQ
       exit
+    elsif @game_over && id == Gosu::KbR
+      # Restarts the game
+      @playing = true      
+      self.reset
     elsif !@playing && id == Gosu::KbS
       @playing = true
       @last_word = Gosu.milliseconds
