@@ -80,7 +80,7 @@ class Typespeed < Gosu::Window
       Gosu::Font.new(24).draw("#{@correct_words} TOTAL words", WIDTH / 2, HEIGHT / 2 + 220, 1, 1, 1, Gosu::Color::BLUE)
     elsif @playing
       @words.each do |word|
-        word.graphic.draw(word.word, word.point.x, word.point.y, 2)
+        word.graphic.draw(word.word, word.point.x, word.point.y, 1, 1, 1, word_color(word.point.x))
       end
 
       # draw the speed!
@@ -99,5 +99,9 @@ class Typespeed < Gosu::Window
     @game_over = true
     @game_over_at = Gosu.milliseconds
     self.text_input = nil
+  end
+
+  def word_color(x)
+    [Gosu::Color::YELLOW,Gosu::Color::RED][x/500]
   end
 end
