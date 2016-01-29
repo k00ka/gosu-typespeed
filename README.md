@@ -18,6 +18,7 @@ The speed-sprint project can be found here: https://github.com/k00ka/speed-sprin
 
 	The words displayed seem pretty random. Create a feeling of 'levels' where longer words appear more frequently and move more quickly as you progress.
 
+[First Team]
 ## Summary
 
 ### Speed control
@@ -29,3 +30,14 @@ The speed-sprint project can be found here: https://github.com/k00ka/speed-sprin
 
 * We added logic to change colour and position (Point.x)
 * The draw method is not yet working
+
+[Team 5]
+Work Done:
+-fixed the game from crashing
+-words move across the screen
+-words change color depending on X coordinate
+-added total words completed
+
+Remaining bugs:
+- pressing enter without pressing any words counts as complete (easy debugging for other features!)
+- WPM is still broken (shows at 0)
