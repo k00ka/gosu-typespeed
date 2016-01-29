@@ -17,11 +17,12 @@ class Typespeed < Gosu::Window
     @words = []
     @last_word = 0
     @last_update = Gosu.milliseconds
-    @available_words = (1..15).map { |i| Point.new(WIDTH / 2, (i * 30) + 3) }
+    @available_words = (1..15).map { |i| Point.new(0, (i * 30) + 3) }
 
     @game_over = @playing = false
     @correct_words = 0
     @input = Gosu::TextInput.new
+    @speed = 3000
   end
 
   def button_down id
@@ -52,8 +53,27 @@ class Typespeed < Gosu::Window
   def update
     return if @game_over || !@playing
     now = Gosu.milliseconds
+    delta = now - @last_word
 
-    if (now - @last_word) >= 1000
+    increment = delta * @speed/WIDTH
+
+    @words.each do |word|
+      word.point.x = word.point.x + increment
+      if(word.point.x < WIDTH/3)
+        @word.color = Gosu::Color::GREEN
+      elsif (word.point.x < (2* WIDTH)/3)
+        @word.color = Gosu::Color::YELLOW
+      else
+        @word.color = Gosu::Color::RED
+      end
+
+
+    end
+
+
+
+
+    if (delta) >= 1000
       word = @dictionary.sample
       slot = @available_words.sample
       return dead! unless slot
@@ -71,7 +91,7 @@ class Typespeed < Gosu::Window
       Gosu::Font.new(24).draw("#{(@correct_words / @game_over_at / 1000).round(1)} WPM", WIDTH / 2, HEIGHT / 2 + 120, 1, 1, 1, Gosu::Color::GREEN)
     elsif @playing
       @words.each do |word|
-        word.graphic.draw(word.word, word.point.x, word.point.y, 1)
+        word.graphic.draw(word.word, word.point.x, word.point.y, 1, 1 , word.color)
       end
       Gosu.draw_line(0, 450, Gosu::Color::RED, WIDTH, 450, Gosu::Color::RED)
 
