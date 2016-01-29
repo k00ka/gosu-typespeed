@@ -65,6 +65,10 @@ class Typespeed < Gosu::Window
       @words << Word.new(word, Gosu::Font.new(24), slot)
       @last_word = now
     end
+
+    @words.each do |word|
+      word.point.x += @speed / 2500
+    end
   end
 
   def draw
@@ -72,13 +76,12 @@ class Typespeed < Gosu::Window
       Gosu::Font.new(48).draw("Game Over", WIDTH / 2, HEIGHT / 2, 1, 1, 1, Gosu::Color::RED)
       Gosu::Font.new(24).draw("(press 'q' to quit)",  WIDTH / 2, HEIGHT / 2 + 48, 1, 1, 1, Gosu::Color::YELLOW)
       Gosu::Font.new(24).draw("(press 'r' to reset)", WIDTH / 2, HEIGHT / 2 + 96, 1, 1, 1, Gosu::Color::YELLOW)
-      Gosu::Font.new(24).draw("#{(@correct_words / @game_over_at / 1000).round(1)} WPM", WIDTH / 2, HEIGHT / 2 + 120, 1, 1, 1, Gosu::Color::GREEN)
+      Gosu::Font.new(24).draw("#{(@correct_words / @game_over_at / 1000 ).round(1)} WPM", WIDTH / 2, HEIGHT / 2 + 120, 1, 1, 1, Gosu::Color::GREEN)
       Gosu::Font.new(24).draw("#{@correct_words} TOTAL words", WIDTH / 2, HEIGHT / 2 + 220, 1, 1, 1, Gosu::Color::BLUE)
     elsif @playing
       @words.each do |word|
-        word.graphic.draw(word.word, word.point.x, word.point.y, 1)
+        word.graphic.draw(word.word, word.point.x, word.point.y, 2)
       end
-      Gosu.draw_line(0, 450, Gosu::Color::RED, WIDTH, 450, Gosu::Color::RED)
 
       # draw the speed!
       @speedometer = Gosu::Image.from_text("#{@speed} ms", 48, align: :center)
