@@ -35,15 +35,12 @@ class Typespeed < Gosu::Window
       @last_word = Gosu.milliseconds
       self.text_input = @input
     elsif @playing && id == Gosu::KbReturn
-      word = @words.detect do |w|
-        w.word == @input.text
-        @correct_words += 1
+      @words.each do |word|
+        if word.word == @input.text
+          @words.delete(word)
+          @correct_words += 1
+        end
       end
-      if word
-        @words.delete word
-        @available_words << word.point
-      end
-
       @input = Gosu::TextInput.new
       self.text_input = @input
     elsif Gosu::KbUp == id
@@ -87,6 +84,9 @@ class Typespeed < Gosu::Window
       # draw the speed!
       @speedometer = Gosu::Image.from_text("#{@speed} ms", 48, align: :center)
       @speedometer.draw_rot(120, 24, 1, 0)
+      # draw total words
+      @correct_words_meter = Gosu::Image.from_text("#{@correct_words} correct words", 48, align: :center)
+      @correct_words_meter.draw_rot(600, 24, 1, 0)
     else
       Gosu::Image.from_text("Get ready to type!", 48, align: :center).draw_rot(WIDTH / 2, HEIGHT / 2, 1, 0)
       Gosu::Image.from_text("press 's' to start", 16, align: :center).draw_rot(WIDTH / 2, HEIGHT / 2 + 50, 1, 0)
@@ -104,7 +104,7 @@ class Typespeed < Gosu::Window
 
   def word_color(word, x)
     if /^#{Regexp.quote(@input.text)}/.match(word.word) && @input.text != ""
-      Gosu::Color::BLUE
+      Gosu::Color::CYAN
     else
       [Gosu::Color::YELLOW,Gosu::Color::RED][x/500]
     end
